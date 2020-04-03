@@ -1,4 +1,4 @@
-//Sai ram
+//Author: Ajay Singh Pawar
 //This file contains a program which implements floyd's algorithm parallely
 //Partioning:-We do domain decomposition by defining our primitive task as the single element of the matrix. So in other words work done by the primitive task is to find the correct value of the element it is associated with.
 //Communication-In the outer most loop for a given value of k we need to communicate a[k,m] to all tasks associated with column m and a[m,k] to all tasks associated with row m
@@ -6,7 +6,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<mpi.h>
-//#include<cassert>
 int minimum(int a,int b)
 {
 	if(a>=b)
@@ -27,7 +26,6 @@ MPI_Status status;
 	MPI_Comm_size(MPI_COMM_WORLD,&p);		//Initializing MPI to run
 	low= (n*id)/p;
 	high= (((id+1)*n)/p)-1;
-//	printf("I am process %d my low= %d and high =%d\n",id,low,high);
 	if(id==(p-1))
 	{
 		file=fopen(argv[1],"r");
@@ -40,14 +38,12 @@ MPI_Status status;
 			l=i*n/p;
 			h=(i+1)*n/p-1;						 	//According to the partition based in low and high sending the elements to the resp.proc
 			MPI_Send(&array[l],h-l+1,MPI_INT,i,0,MPI_COMM_WORLD);
-		//	printf("i sent to %d\n",i);
 		}
 		fclose(file);					
 	}
 	else
 	{
 		MPI_Recv(&array[low],high-low+1,MPI_INT,p-1,0,MPI_COMM_WORLD,&status);	//Receiving the elements in the different processes
-	//	printf("%d i received\n",id);
 	}
 
 
@@ -100,8 +96,6 @@ MPI_Status status;
 			printf("\n");
 		}
 	}
-//printf("i am process %d and i am leaving\n",id);	
-//printf("%d i am leaving my elements start from %d,%d and total elm=%d\n",id,l,h,high-low+1);       	
 MPI_Finalize();
 return 0;
 }
